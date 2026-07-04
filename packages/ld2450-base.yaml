@@ -1,0 +1,156 @@
+# SmartHomeShop LD2450 base package
+#
+# Shared radar layer for all SmartHomeShop products with an HLK-LD2450
+# (UltimateSensor V1/V2, UltimateSensor Mini V1, ...). Built on the native
+# ESPHome ld2450 component, so no external component is required.
+#
+# Include from a device config:
+#
+#   packages:
+#     ld2450_base: github://smarthomeshop/ld2450/packages/ld2450-base.yaml@main
+#
+# Override the UART pins per product via substitutions:
+#
+#   substitutions:
+#     ld2450_uart_tx_pin: GPIO13
+#     ld2450_uart_rx_pin: GPIO14
+
+substitutions:
+  ld2450_uart_tx_pin: GPIO13
+  ld2450_uart_rx_pin: GPIO14
+  ld2450_throttle: 1s
+  ld2450_target_throttle: 250ms
+
+uart:
+  id: uart_ld2450
+  tx_pin: ${ld2450_uart_tx_pin}
+  rx_pin: ${ld2450_uart_rx_pin}
+  baud_rate: 256000
+  parity: NONE
+  stop_bits: 1
+  rx_buffer_size: 1024
+
+ld2450:
+  id: ld2450_radar
+  uart_id: uart_ld2450
+
+binary_sensor:
+  - platform: ld2450
+    ld2450_id: ld2450_radar
+    has_target:
+      name: "Presence"
+      device_class: occupancy
+      filters:
+        - delayed_off: 1s
+    has_moving_target:
+      name: "Motion"
+      device_class: motion
+      filters:
+        - delayed_off: 1s
+    has_still_target:
+      name: "Still Presence"
+      device_class: occupancy
+      filters:
+        - delayed_off: 1s
+
+sensor:
+  - platform: ld2450
+    ld2450_id: ld2450_radar
+    target_count:
+      name: "Radar Target Count"
+      filters:
+        - throttle: ${ld2450_throttle}
+    still_target_count:
+      name: "Radar Still Target Count"
+      filters:
+        - throttle: ${ld2450_throttle}
+    moving_target_count:
+      name: "Radar Moving Target Count"
+      filters:
+        - throttle: ${ld2450_throttle}
+    target_1:
+      x:
+        id: radar_target1_x
+        name: "Target 1 X"
+        filters:
+          - throttle: ${ld2450_target_throttle}
+      y:
+        id: radar_target1_y
+        name: "Target 1 Y"
+        filters:
+          - throttle: ${ld2450_target_throttle}
+      speed:
+        id: radar_target1_speed
+        name: "Target 1 Speed"
+        filters:
+          - throttle: ${ld2450_target_throttle}
+      distance:
+        id: radar_target1_distance
+        name: "Target 1 Distance"
+        filters:
+          - throttle: ${ld2450_target_throttle}
+    target_2:
+      x:
+        id: radar_target2_x
+        name: "Target 2 X"
+        filters:
+          - throttle: ${ld2450_target_throttle}
+      y:
+        id: radar_target2_y
+        name: "Target 2 Y"
+        filters:
+          - throttle: ${ld2450_target_throttle}
+      speed:
+        id: radar_target2_speed
+        name: "Target 2 Speed"
+        filters:
+          - throttle: ${ld2450_target_throttle}
+      distance:
+        id: radar_target2_distance
+        name: "Target 2 Distance"
+        filters:
+          - throttle: ${ld2450_target_throttle}
+    target_3:
+      x:
+        id: radar_target3_x
+        name: "Target 3 X"
+        filters:
+          - throttle: ${ld2450_target_throttle}
+      y:
+        id: radar_target3_y
+        name: "Target 3 Y"
+        filters:
+          - throttle: ${ld2450_target_throttle}
+      speed:
+        id: radar_target3_speed
+        name: "Target 3 Speed"
+        filters:
+          - throttle: ${ld2450_target_throttle}
+      distance:
+        id: radar_target3_distance
+        name: "Target 3 Distance"
+        filters:
+          - throttle: ${ld2450_target_throttle}
+
+number:
+  - platform: ld2450
+    ld2450_id: ld2450_radar
+    presence_timeout:
+      name: "Presence Timeout"
+
+switch:
+  - platform: ld2450
+    ld2450_id: ld2450_radar
+    bluetooth:
+      name: "Radar Bluetooth"
+      entity_category: config
+    multi_target:
+      name: "Radar Multi Target"
+      entity_category: config
+
+button:
+  - platform: ld2450
+    ld2450_id: ld2450_radar
+    restart:
+      name: "Radar Restart"
+      entity_category: config
