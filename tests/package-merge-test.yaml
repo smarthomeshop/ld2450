@@ -1,0 +1,30 @@
+substitutions:
+  device_name: ld2450-package-merge-test
+  friendly_name: LD2450 Package Merge Test
+  ld2450_uart_tx_pin: GPIO18
+  ld2450_uart_rx_pin: GPIO19
+
+packages:
+  tracking: !include ../packages/ld2450-base.yaml
+  room_designer: !include ../packages/ld2450-polygon-zones.yaml
+
+esphome:
+  name: ${device_name}
+  friendly_name: ${friendly_name}
+
+esp32:
+  board: esp32-s3-devkitc-1
+  framework:
+    type: esp-idf
+
+logger:
+
+wifi:
+  ssid: test-network
+  password: test-password
+
+uart:
+  - id: uart_other_sensor
+    tx_pin: GPIO21
+    rx_pin: GPIO20
+    baud_rate: 115200

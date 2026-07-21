@@ -1,0 +1,77 @@
+substitutions:
+  device_name: ld2450-ceilsense-merge-test
+  friendly_name: LD2450 CeilSense Merge Test
+  ceilsense_ld2450_uart_tx_pin: GPIO13
+  ceilsense_ld2450_uart_rx_pin: GPIO14
+  room_designer_target_count: "3"
+  room_designer_coordinate_scale: "1.0f"
+  room_designer_target_1_x_id: target1_x
+  room_designer_target_1_y_id: target1_y
+  room_designer_target_2_x_id: target2_x
+  room_designer_target_2_y_id: target2_y
+  room_designer_target_3_x_id: target3_x
+  room_designer_target_3_y_id: target3_y
+  room_designer_target_4_x_id: target3_x
+  room_designer_target_4_y_id: target3_y
+  room_designer_target_5_x_id: target3_x
+  room_designer_target_5_y_id: target3_y
+
+packages:
+  radar: !include ../packages/ld2450-ceilsense.yaml
+  zones: !include ../packages/ld2450-polygon-zones.yaml
+
+esphome:
+  name: ${device_name}
+  friendly_name: ${friendly_name}
+
+esp32:
+  board: esp32-s3-devkitc-1
+  framework:
+    type: esp-idf
+
+logger:
+
+api:
+
+wifi:
+  ssid: test-network
+  password: test-password
+
+globals:
+  - id: startup_phase
+    type: int
+    restore_value: false
+    initial_value: "0"
+  - id: startup_failed
+    type: bool
+    restore_value: false
+    initial_value: "false"
+  - id: ld2450_required
+    type: bool
+    restore_value: false
+    initial_value: "false"
+  - id: ld2450_checked
+    type: bool
+    restore_value: false
+    initial_value: "false"
+
+switch:
+  - platform: template
+    name: Debug Mode
+    id: debug_mode
+    optimistic: true
+
+light:
+  - platform: esp32_rmt_led_strip
+    id: status_led
+    name: Status LED
+    pin: GPIO20
+    num_leds: 1
+    rgb_order: GRB
+    chipset: WS2812
+    effects:
+      - addressable_lambda:
+          name: Presence Active
+          update_interval: 500ms
+          lambda: |-
+            it.all() = esphome::Color(0, 100, 0);

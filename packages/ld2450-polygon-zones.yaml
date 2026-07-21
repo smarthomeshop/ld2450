@@ -1,9 +1,8 @@
 # SmartHomeShop LD2450 polygon zones package
 #
 # Adds polygon detection zones, polygon exclusion zones, entry lines with
-# people counting and the SmartHomeShop panel push API on top of the
-# ld2450-base package. Requires ld2450-base.yaml (uses the target x/y
-# sensor ids radar_target1_x .. radar_target3_y).
+# people counting and the SmartHomeShop panel push API on top of the shared
+# LD2450 base package. Coordinates are expressed in millimetres.
 #
 #   packages:
 #     ld2450_base: github://smarthomeshop/ld2450/packages/ld2450-base.yaml@main
@@ -12,6 +11,20 @@
 # Zone data formats (pushed by the SmartHomeShop panel):
 #   polygon:    "x1:y1;x2:y2;x3:y3;..."  (mm, sensor coordinates, max 20 points)
 #   entry line: "x1:y1;x2:y2;left" or "x1:y1;x2:y2;right"
+
+substitutions:
+  room_designer_target_count: "3"
+  room_designer_coordinate_scale: "1.0f"
+  room_designer_target_1_x_id: radar_target1_x
+  room_designer_target_1_y_id: radar_target1_y
+  room_designer_target_2_x_id: radar_target2_x
+  room_designer_target_2_y_id: radar_target2_y
+  room_designer_target_3_x_id: radar_target3_x
+  room_designer_target_3_y_id: radar_target3_y
+  room_designer_target_4_x_id: radar_target3_x
+  room_designer_target_4_y_id: radar_target3_y
+  room_designer_target_5_x_id: radar_target3_x
+  room_designer_target_5_y_id: radar_target3_y
 
 api:
   actions:
@@ -226,8 +239,8 @@ interval:
           static Line lines[2];
           static std::string zone_text[4], excl_text[2], line_text[2];
           static bool cache_init = false;
-          static float prev_x[3], prev_y[3];
-          static bool prev_ok[3] = {false, false, false};
+          static float prev_x[5], prev_y[5];
+          static bool prev_ok[5] = {false, false, false, false, false};
 
           auto parse_poly = [](const std::string &s, Poly &p) {
             p.n = 0;
@@ -307,16 +320,30 @@ interval:
           }
           cache_init = true;
 
+          const int target_count = ${room_designer_target_count};
           if (!id(polygon_zones_enabled).state) {
-            for (int i = 0; i < 3; i++) prev_ok[i] = false;
+            for (int i = 0; i < target_count; i++) prev_ok[i] = false;
             return;
           }
 
-          const float tx[3] = { id(radar_target1_x).state, id(radar_target2_x).state, id(radar_target3_x).state };
-          const float ty[3] = { id(radar_target1_y).state, id(radar_target2_y).state, id(radar_target3_y).state };
+          const float scale = ${room_designer_coordinate_scale};
+          const float tx[5] = {
+            id(${room_designer_target_1_x_id}).state * scale,
+            id(${room_designer_target_2_x_id}).state * scale,
+            id(${room_designer_target_3_x_id}).state * scale,
+            id(${room_designer_target_4_x_id}).state * scale,
+            id(${room_designer_target_5_x_id}).state * scale
+          };
+          const float ty[5] = {
+            id(${room_designer_target_1_y_id}).state * scale,
+            id(${room_designer_target_2_y_id}).state * scale,
+            id(${room_designer_target_3_y_id}).state * scale,
+            id(${room_designer_target_4_y_id}).state * scale,
+            id(${room_designer_target_5_y_id}).state * scale
+          };
           int zone_count[4] = {0, 0, 0, 0};
 
-          for (int t = 0; t < 3; t++) {
+          for (int t = 0; t < target_count; t++) {
             const bool active = !std::isnan(tx[t]) && !std::isnan(ty[t]) && (tx[t] != 0.0f || ty[t] != 0.0f);
             if (!active) { prev_ok[t] = false; continue; }
             const float px = tx[t], py = ty[t];

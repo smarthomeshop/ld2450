@@ -1,156 +1,288 @@
-# SmartHomeShop LD2450 base package
+# Shared SmartHomeShop tracking package for HLK-LD2450 radar.
 #
-# Shared radar layer for all SmartHomeShop products with an HLK-LD2450
-# (UltimateSensor V1/V2, UltimateSensor Mini V1, ...). Built on the native
-# ESPHome ld2450 component, so no external component is required.
-#
-# Include from a device config:
-#
-#   packages:
-#     ld2450_base: github://smarthomeshop/ld2450/packages/ld2450-base.yaml@main
-#
-# Override the UART pins per product via substitutions:
-#
-#   substitutions:
-#     ld2450_uart_tx_pin: GPIO13
-#     ld2450_uart_rx_pin: GPIO14
+# Product repositories only need to override the UART pins. Entity ids are kept
+# stable so the SmartHomeShop panel, Room Designer and product firmware can use
+# the same interface across UltimateSensor variants.
 
 substitutions:
   ld2450_uart_tx_pin: GPIO13
   ld2450_uart_rx_pin: GPIO14
   ld2450_throttle: 1s
   ld2450_target_throttle: 250ms
+  ld2450_count_name_prefix: "Radar "
+  ld2450_target_name_prefix: ""
+  ld2450_zone_name_prefix: ""
+  ld2450_hardware_name_prefix: "LD2450 "
 
 uart:
-  id: uart_ld2450
-  tx_pin: ${ld2450_uart_tx_pin}
-  rx_pin: ${ld2450_uart_rx_pin}
-  baud_rate: 256000
-  parity: NONE
-  stop_bits: 1
-  rx_buffer_size: 1024
+  - id: uart_tracking
+    tx_pin: ${ld2450_uart_tx_pin}
+    rx_pin: ${ld2450_uart_rx_pin}
+    baud_rate: 256000
+    parity: NONE
+    stop_bits: 1
+    rx_buffer_size: 1024
 
 ld2450:
-  id: ld2450_radar
-  uart_id: uart_ld2450
-
-binary_sensor:
-  - platform: ld2450
-    ld2450_id: ld2450_radar
-    has_target:
-      name: "Presence"
-      device_class: occupancy
-      filters:
-        - delayed_off: 1s
-    has_moving_target:
-      name: "Motion"
-      device_class: motion
-      filters:
-        - delayed_off: 1s
-    has_still_target:
-      name: "Still Presence"
-      device_class: occupancy
-      filters:
-        - delayed_off: 1s
+  id: tracking_radar
+  uart_id: uart_tracking
 
 sensor:
   - platform: ld2450
-    ld2450_id: ld2450_radar
+    ld2450_id: tracking_radar
     target_count:
-      name: "Radar Target Count"
+      id: radar_target_count
+      name: "${ld2450_count_name_prefix}Target Count"
       filters:
         - throttle: ${ld2450_throttle}
     still_target_count:
-      name: "Radar Still Target Count"
+      id: radar_still_target_count
+      name: "${ld2450_count_name_prefix}Still Target Count"
       filters:
         - throttle: ${ld2450_throttle}
     moving_target_count:
-      name: "Radar Moving Target Count"
+      id: radar_moving_target_count
+      name: "${ld2450_count_name_prefix}Moving Target Count"
       filters:
         - throttle: ${ld2450_throttle}
     target_1:
       x:
         id: radar_target1_x
-        name: "Target 1 X"
+        name: "${ld2450_target_name_prefix}Target 1 X"
         filters:
           - throttle: ${ld2450_target_throttle}
       y:
         id: radar_target1_y
-        name: "Target 1 Y"
+        name: "${ld2450_target_name_prefix}Target 1 Y"
         filters:
           - throttle: ${ld2450_target_throttle}
       speed:
         id: radar_target1_speed
-        name: "Target 1 Speed"
+        name: "${ld2450_target_name_prefix}Target 1 Speed"
+        filters:
+          - throttle: ${ld2450_target_throttle}
+      angle:
+        id: radar_target1_angle
+        name: "${ld2450_target_name_prefix}Target 1 Angle"
         filters:
           - throttle: ${ld2450_target_throttle}
       distance:
         id: radar_target1_distance
-        name: "Target 1 Distance"
+        name: "${ld2450_target_name_prefix}Target 1 Distance"
+        filters:
+          - throttle: ${ld2450_target_throttle}
+      resolution:
+        id: radar_target1_resolution
+        name: "${ld2450_target_name_prefix}Target 1 Resolution"
         filters:
           - throttle: ${ld2450_target_throttle}
     target_2:
       x:
         id: radar_target2_x
-        name: "Target 2 X"
+        name: "${ld2450_target_name_prefix}Target 2 X"
         filters:
           - throttle: ${ld2450_target_throttle}
       y:
         id: radar_target2_y
-        name: "Target 2 Y"
+        name: "${ld2450_target_name_prefix}Target 2 Y"
         filters:
           - throttle: ${ld2450_target_throttle}
       speed:
         id: radar_target2_speed
-        name: "Target 2 Speed"
+        name: "${ld2450_target_name_prefix}Target 2 Speed"
+        filters:
+          - throttle: ${ld2450_target_throttle}
+      angle:
+        id: radar_target2_angle
+        name: "${ld2450_target_name_prefix}Target 2 Angle"
         filters:
           - throttle: ${ld2450_target_throttle}
       distance:
         id: radar_target2_distance
-        name: "Target 2 Distance"
+        name: "${ld2450_target_name_prefix}Target 2 Distance"
+        filters:
+          - throttle: ${ld2450_target_throttle}
+      resolution:
+        id: radar_target2_resolution
+        name: "${ld2450_target_name_prefix}Target 2 Resolution"
         filters:
           - throttle: ${ld2450_target_throttle}
     target_3:
       x:
         id: radar_target3_x
-        name: "Target 3 X"
+        name: "${ld2450_target_name_prefix}Target 3 X"
         filters:
           - throttle: ${ld2450_target_throttle}
       y:
         id: radar_target3_y
-        name: "Target 3 Y"
+        name: "${ld2450_target_name_prefix}Target 3 Y"
         filters:
           - throttle: ${ld2450_target_throttle}
       speed:
         id: radar_target3_speed
-        name: "Target 3 Speed"
+        name: "${ld2450_target_name_prefix}Target 3 Speed"
+        filters:
+          - throttle: ${ld2450_target_throttle}
+      angle:
+        id: radar_target3_angle
+        name: "${ld2450_target_name_prefix}Target 3 Angle"
         filters:
           - throttle: ${ld2450_target_throttle}
       distance:
         id: radar_target3_distance
-        name: "Target 3 Distance"
+        name: "${ld2450_target_name_prefix}Target 3 Distance"
         filters:
           - throttle: ${ld2450_target_throttle}
+      resolution:
+        id: radar_target3_resolution
+        name: "${ld2450_target_name_prefix}Target 3 Resolution"
+        filters:
+          - throttle: ${ld2450_target_throttle}
+    zone_1:
+      target_count:
+        id: zone1_target_count
+        name: "${ld2450_zone_name_prefix}Zone 1 Target Count"
+        filters:
+          - throttle: ${ld2450_throttle}
+      still_target_count:
+        id: zone1_still_target_count
+        name: "${ld2450_zone_name_prefix}Zone 1 Still Target Count"
+        filters:
+          - throttle: ${ld2450_throttle}
+      moving_target_count:
+        id: zone1_moving_target_count
+        name: "${ld2450_zone_name_prefix}Zone 1 Moving Target Count"
+        filters:
+          - throttle: ${ld2450_throttle}
+    zone_2:
+      target_count:
+        id: zone2_target_count
+        name: "${ld2450_zone_name_prefix}Zone 2 Target Count"
+        filters:
+          - throttle: ${ld2450_throttle}
+      still_target_count:
+        id: zone2_still_target_count
+        name: "${ld2450_zone_name_prefix}Zone 2 Still Target Count"
+        filters:
+          - throttle: ${ld2450_throttle}
+      moving_target_count:
+        id: zone2_moving_target_count
+        name: "${ld2450_zone_name_prefix}Zone 2 Moving Target Count"
+        filters:
+          - throttle: ${ld2450_throttle}
+    zone_3:
+      target_count:
+        id: zone3_target_count
+        name: "${ld2450_zone_name_prefix}Zone 3 Target Count"
+        filters:
+          - throttle: ${ld2450_throttle}
+      still_target_count:
+        id: zone3_still_target_count
+        name: "${ld2450_zone_name_prefix}Zone 3 Still Target Count"
+        filters:
+          - throttle: ${ld2450_throttle}
+      moving_target_count:
+        id: zone3_moving_target_count
+        name: "${ld2450_zone_name_prefix}Zone 3 Moving Target Count"
+        filters:
+          - throttle: ${ld2450_throttle}
+
+binary_sensor:
+  - platform: ld2450
+    ld2450_id: tracking_radar
+    has_target:
+      id: tracking_presence
+      name: "Tracking Presence"
+      device_class: occupancy
+    has_moving_target:
+      id: tracking_moving_target
+      name: "Tracking Moving Target"
+      device_class: motion
+    has_still_target:
+      id: tracking_still_target
+      name: "Tracking Still Target"
+      device_class: occupancy
 
 number:
   - platform: ld2450
-    ld2450_id: ld2450_radar
+    ld2450_id: tracking_radar
     presence_timeout:
-      name: "Presence Timeout"
+      id: ld2450_presence_timeout
+      internal: true
+    zone_1:
+      x1:
+        name: "${ld2450_zone_name_prefix}Zone 1 X1"
+      y1:
+        name: "${ld2450_zone_name_prefix}Zone 1 Y1"
+      x2:
+        name: "${ld2450_zone_name_prefix}Zone 1 X2"
+      y2:
+        name: "${ld2450_zone_name_prefix}Zone 1 Y2"
+    zone_2:
+      x1:
+        name: "${ld2450_zone_name_prefix}Zone 2 X1"
+      y1:
+        name: "${ld2450_zone_name_prefix}Zone 2 Y1"
+      x2:
+        name: "${ld2450_zone_name_prefix}Zone 2 X2"
+      y2:
+        name: "${ld2450_zone_name_prefix}Zone 2 Y2"
+    zone_3:
+      x1:
+        name: "${ld2450_zone_name_prefix}Zone 3 X1"
+      y1:
+        name: "${ld2450_zone_name_prefix}Zone 3 Y1"
+      x2:
+        name: "${ld2450_zone_name_prefix}Zone 3 X2"
+      y2:
+        name: "${ld2450_zone_name_prefix}Zone 3 Y2"
+  - platform: template
+    name: "Tracking Presence Timeout"
+    id: user_tracking_presence_timeout
+    entity_category: config
+    unit_of_measurement: "s"
+    min_value: 1
+    max_value: 600
+    step: 1
+    optimistic: true
+    restore_value: true
+    initial_value: 60
+    set_action:
+      - number.set:
+          id: ld2450_presence_timeout
+          value: !lambda 'return x;'
 
 switch:
   - platform: ld2450
-    ld2450_id: ld2450_radar
+    ld2450_id: tracking_radar
     bluetooth:
-      name: "Radar Bluetooth"
+      id: ld2450_bluetooth
+      name: "${ld2450_hardware_name_prefix}Bluetooth"
       entity_category: config
     multi_target:
-      name: "Radar Multi Target"
+      id: ld2450_multi_target
+      name: "${ld2450_hardware_name_prefix}Multi Target"
       entity_category: config
 
 button:
   - platform: ld2450
-    ld2450_id: ld2450_radar
+    ld2450_id: tracking_radar
     restart:
-      name: "Radar Restart"
-      entity_category: config
+      id: ld2450_restart
+      name: "${ld2450_hardware_name_prefix}Restart"
+      entity_category: diagnostic
+    factory_reset:
+      id: ld2450_factory_reset
+      name: "${ld2450_hardware_name_prefix}Factory Reset"
+      entity_category: diagnostic
+      disabled_by_default: true
+
+text_sensor:
+  - platform: ld2450
+    ld2450_id: tracking_radar
+    version:
+      name: "${ld2450_hardware_name_prefix}Firmware"
+      entity_category: diagnostic
+    mac_address:
+      name: "${ld2450_hardware_name_prefix}Bluetooth MAC"
+      entity_category: diagnostic
