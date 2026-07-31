@@ -7,6 +7,7 @@
 substitutions:
   ld2450_uart_tx_pin: GPIO13
   ld2450_uart_rx_pin: GPIO14
+  ld2450_uart_rx_pullup: "false"
   ld2450_throttle: 1s
   ld2450_target_throttle: 250ms
   ld2450_count_name_prefix: "Radar "
@@ -17,7 +18,11 @@ substitutions:
 uart:
   - id: uart_tracking
     tx_pin: ${ld2450_uart_tx_pin}
-    rx_pin: ${ld2450_uart_rx_pin}
+    rx_pin:
+      number: ${ld2450_uart_rx_pin}
+      mode:
+        input: true
+        pullup: ${ld2450_uart_rx_pullup}
     baud_rate: 256000
     parity: NONE
     stop_bits: 1
@@ -50,94 +55,130 @@ sensor:
         id: radar_target1_x
         name: "${ld2450_target_name_prefix}Target 1 X"
         filters:
-          - throttle: ${ld2450_target_throttle}
+          - throttle_with_priority:
+              timeout: ${ld2450_target_throttle}
+              value: nan
       y:
         id: radar_target1_y
         name: "${ld2450_target_name_prefix}Target 1 Y"
         filters:
-          - throttle: ${ld2450_target_throttle}
+          - throttle_with_priority:
+              timeout: ${ld2450_target_throttle}
+              value: nan
       speed:
         id: radar_target1_speed
         name: "${ld2450_target_name_prefix}Target 1 Speed"
         filters:
-          - throttle: ${ld2450_target_throttle}
+          - throttle_with_priority:
+              timeout: ${ld2450_target_throttle}
+              value: nan
       angle:
         id: radar_target1_angle
         name: "${ld2450_target_name_prefix}Target 1 Angle"
         filters:
-          - throttle: ${ld2450_target_throttle}
+          - throttle_with_priority:
+              timeout: ${ld2450_target_throttle}
+              value: nan
       distance:
         id: radar_target1_distance
         name: "${ld2450_target_name_prefix}Target 1 Distance"
         filters:
-          - throttle: ${ld2450_target_throttle}
+          - throttle_with_priority:
+              timeout: ${ld2450_target_throttle}
+              value: nan
       resolution:
         id: radar_target1_resolution
         name: "${ld2450_target_name_prefix}Target 1 Resolution"
         filters:
-          - throttle: ${ld2450_target_throttle}
+          - throttle_with_priority:
+              timeout: ${ld2450_target_throttle}
+              value: nan
     target_2:
       x:
         id: radar_target2_x
         name: "${ld2450_target_name_prefix}Target 2 X"
         filters:
-          - throttle: ${ld2450_target_throttle}
+          - throttle_with_priority:
+              timeout: ${ld2450_target_throttle}
+              value: nan
       y:
         id: radar_target2_y
         name: "${ld2450_target_name_prefix}Target 2 Y"
         filters:
-          - throttle: ${ld2450_target_throttle}
+          - throttle_with_priority:
+              timeout: ${ld2450_target_throttle}
+              value: nan
       speed:
         id: radar_target2_speed
         name: "${ld2450_target_name_prefix}Target 2 Speed"
         filters:
-          - throttle: ${ld2450_target_throttle}
+          - throttle_with_priority:
+              timeout: ${ld2450_target_throttle}
+              value: nan
       angle:
         id: radar_target2_angle
         name: "${ld2450_target_name_prefix}Target 2 Angle"
         filters:
-          - throttle: ${ld2450_target_throttle}
+          - throttle_with_priority:
+              timeout: ${ld2450_target_throttle}
+              value: nan
       distance:
         id: radar_target2_distance
         name: "${ld2450_target_name_prefix}Target 2 Distance"
         filters:
-          - throttle: ${ld2450_target_throttle}
+          - throttle_with_priority:
+              timeout: ${ld2450_target_throttle}
+              value: nan
       resolution:
         id: radar_target2_resolution
         name: "${ld2450_target_name_prefix}Target 2 Resolution"
         filters:
-          - throttle: ${ld2450_target_throttle}
+          - throttle_with_priority:
+              timeout: ${ld2450_target_throttle}
+              value: nan
     target_3:
       x:
         id: radar_target3_x
         name: "${ld2450_target_name_prefix}Target 3 X"
         filters:
-          - throttle: ${ld2450_target_throttle}
+          - throttle_with_priority:
+              timeout: ${ld2450_target_throttle}
+              value: nan
       y:
         id: radar_target3_y
         name: "${ld2450_target_name_prefix}Target 3 Y"
         filters:
-          - throttle: ${ld2450_target_throttle}
+          - throttle_with_priority:
+              timeout: ${ld2450_target_throttle}
+              value: nan
       speed:
         id: radar_target3_speed
         name: "${ld2450_target_name_prefix}Target 3 Speed"
         filters:
-          - throttle: ${ld2450_target_throttle}
+          - throttle_with_priority:
+              timeout: ${ld2450_target_throttle}
+              value: nan
       angle:
         id: radar_target3_angle
         name: "${ld2450_target_name_prefix}Target 3 Angle"
         filters:
-          - throttle: ${ld2450_target_throttle}
+          - throttle_with_priority:
+              timeout: ${ld2450_target_throttle}
+              value: nan
       distance:
         id: radar_target3_distance
         name: "${ld2450_target_name_prefix}Target 3 Distance"
         filters:
-          - throttle: ${ld2450_target_throttle}
+          - throttle_with_priority:
+              timeout: ${ld2450_target_throttle}
+              value: nan
       resolution:
         id: radar_target3_resolution
         name: "${ld2450_target_name_prefix}Target 3 Resolution"
         filters:
-          - throttle: ${ld2450_target_throttle}
+          - throttle_with_priority:
+              timeout: ${ld2450_target_throttle}
+              value: nan
     zone_1:
       target_count:
         id: zone1_target_count

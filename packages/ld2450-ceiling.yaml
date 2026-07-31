@@ -1,0 +1,17 @@
+# Shared metadata for ceiling-mounted LD2450 products.
+#
+# Target coordinates remain in the native LD2450 floor plane. Consumers such
+# as the SmartHomeShop Room Designer use this entity to select ceiling
+# mounting, coverage and orientation defaults without product-name guessing.
+
+substitutions:
+  ld2450_mounting_mode_name: "Radar Mounting Mode"
+
+text_sensor:
+  - platform: template
+    id: room_designer_mounting_mode
+    name: "${ld2450_mounting_mode_name}"
+    icon: mdi:ceiling-light
+    entity_category: diagnostic
+    lambda: return {"ceiling"};
+    update_interval: 60s

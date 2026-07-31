@@ -19,6 +19,7 @@ substitutions:
 packages:
   radar: !include ../packages/ld2450-ceilsense.yaml
   zones: !include ../packages/ld2450-polygon-zones.yaml
+  ceiling: !include ../packages/ld2450-ceiling.yaml
 
 esphome:
   name: ${device_name}
