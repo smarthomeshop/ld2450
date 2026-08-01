@@ -71,16 +71,18 @@ still publishes raw floor-plane coordinates. The SmartHomeShop Room Designer
 applies the ceiling height, downward mounting orientation and field-of-view
 projection when it draws the room and zones.
 
-Ceiling-mounted products also include `ld2450-ceiling.yaml`. This publishes a
-stable `Radar Mounting Mode` diagnostic entity with the value `ceiling`, so
-consumers can select the correct mounting model without relying only on device
-or entity names.
+Ceiling mounting is deliberately not defined in this radar repository. Products
+combine their radar profile with the universal
+[`smarthomeshop/radar-mounting`](https://github.com/smarthomeshop/radar-mounting)
+packages. This keeps mounting, projection and geometry defaults identical for
+LD2450, LD2460 and LD6002B products.
 
 ```yaml
 packages:
   radar: github://smarthomeshop/ld2450/packages/ld2450-ceilsense.yaml@main
   zones: github://smarthomeshop/ld2450/packages/ld2450-polygon-zones.yaml@main
-  mounting: github://smarthomeshop/ld2450/packages/ld2450-ceiling.yaml@main
+  mounting: github://smarthomeshop/radar-mounting/packages/mounting/ceiling.yaml@main
+  radar_profile: github://smarthomeshop/radar-mounting/packages/radars/ld2450.yaml@main
 ```
 
 ## Example
