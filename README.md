@@ -81,8 +81,8 @@ LD2450, LD2460 and LD6002B products.
 packages:
   radar: github://smarthomeshop/ld2450/packages/ld2450-ceilsense.yaml@main
   zones: github://smarthomeshop/ld2450/packages/ld2450-polygon-zones.yaml@main
-  mounting: github://smarthomeshop/radar-mounting/packages/mounting/ceiling.yaml@main
-  radar_profile: github://smarthomeshop/radar-mounting/packages/radars/ld2450.yaml@main
+  mounting: github://smarthomeshop/radar-mounting/packages/mounting/ceiling.yaml@v1.0.0
+  radar_profile: github://smarthomeshop/radar-mounting/packages/radars/ld2450.yaml@v1.0.0
 ```
 
 ## Example
