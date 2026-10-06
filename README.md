@@ -43,6 +43,11 @@ tracks all three LD2450 targets and is shared by every SmartHomeShop product
 that uses this radar. Definitions are pushed from the SmartHomeShop panel in
 Home Assistant via these API actions:
 
+Excluded targets do not update entry-line history or persistent people counts.
+This makes the exclusion slots suitable for Room Designer's optional mirror
+reflection protection without allowing a ghost target to create a crossing
+when it enters or leaves the protected area.
+
 | Action | Variables | Format |
 |---|---|---|
 | `set_polygon_zone` | `zone_id` (1-4), `polygon` | `"x1:y1;x2:y2;x3:y3;..."` (mm, max 20 points) |

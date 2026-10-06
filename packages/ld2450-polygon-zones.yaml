@@ -349,10 +349,15 @@ interval:
             const float px = tx[t], py = ty[t];
 
             const bool excluded = in_poly(px, py, excls[0]) || in_poly(px, py, excls[1]);
-            if (!excluded) {
-              for (int z = 0; z < 4; z++) {
-                if (in_poly(px, py, zones[z])) zone_count[z]++;
-              }
+            // An excluded reflection must not update line history. Otherwise a
+            // ghost can still change the persistent people count, or create a
+            // false crossing when it leaves the exclusion polygon.
+            if (excluded) {
+              prev_ok[t] = false;
+              continue;
+            }
+            for (int z = 0; z < 4; z++) {
+              if (in_poly(px, py, zones[z])) zone_count[z]++;
             }
 
             if (prev_ok[t]) {
