@@ -5,8 +5,8 @@
 # LD2450 base package. Coordinates are expressed in millimetres.
 #
 #   packages:
-#     ld2450_base: github://smarthomeshop/ld2450/packages/ld2450-base.yaml@main
-#     ld2450_zones: github://smarthomeshop/ld2450/packages/ld2450-polygon-zones.yaml@main
+#     ld2450_base: github://smarthomeshop/ld2450/packages/ld2450-base.yaml@v1.0.0
+#     ld2450_zones: github://smarthomeshop/ld2450/packages/ld2450-polygon-zones.yaml@v1.0.0
 #
 # Zone data formats (pushed by the SmartHomeShop panel):
 #   polygon:    "x1:y1;x2:y2;x3:y3;..."  (mm, sensor coordinates, max 20 points)

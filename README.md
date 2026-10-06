@@ -8,6 +8,10 @@ Built on the [native ESPHome ld2450 component](https://esphome.io/components/sen
 so no external component is needed. Products include these packages instead of
 duplicating the radar configuration per product.
 
+The stable production contract is released as `v1.0.0`. Product firmware
+should pin this tag so an unrelated change on `main` cannot alter an existing
+firmware build. Use `main` only while testing upcoming package changes.
+
 ## Packages
 
 ### `packages/ld2450-base.yaml`
@@ -24,7 +28,7 @@ substitutions:
   ld2450_uart_rx_pin: GPIO14
 
 packages:
-  ld2450_base: github://smarthomeshop/ld2450/packages/ld2450-base.yaml@main
+  ld2450_base: github://smarthomeshop/ld2450/packages/ld2450-base.yaml@v1.0.0
 ```
 
 ### `packages/ld2450-polygon-zones.yaml`
@@ -57,8 +61,8 @@ when it enters or leaves the protected area.
 
 ```yaml
 packages:
-  ld2450_base: github://smarthomeshop/ld2450/packages/ld2450-base.yaml@main
-  ld2450_zones: github://smarthomeshop/ld2450/packages/ld2450-polygon-zones.yaml@main
+  ld2450_base: github://smarthomeshop/ld2450/packages/ld2450-base.yaml@v1.0.0
+  ld2450_zones: github://smarthomeshop/ld2450/packages/ld2450-polygon-zones.yaml@v1.0.0
 ```
 
 The zones package requires the base package. Its target count, coordinate scale
@@ -84,8 +88,8 @@ LD2450, LD2460 and LD6002B products.
 
 ```yaml
 packages:
-  radar: github://smarthomeshop/ld2450/packages/ld2450-ceilsense.yaml@main
-  zones: github://smarthomeshop/ld2450/packages/ld2450-polygon-zones.yaml@main
+  radar: github://smarthomeshop/ld2450/packages/ld2450-ceilsense.yaml@v1.0.0
+  zones: github://smarthomeshop/ld2450/packages/ld2450-polygon-zones.yaml@v1.0.0
   mounting: github://smarthomeshop/radar-mounting/packages/mounting/ceiling.yaml@v1.0.0
   radar_profile: github://smarthomeshop/radar-mounting/packages/radars/ld2450.yaml@v1.0.0
 ```
